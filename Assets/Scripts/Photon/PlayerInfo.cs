@@ -7,6 +7,7 @@ public class PlayerInfo : MonoBehaviour
     public static PlayerInfo PI;
 
     public int mySelectedColour;
+    public string playerName;
 
     public GameObject[] PlayerTanks;
 

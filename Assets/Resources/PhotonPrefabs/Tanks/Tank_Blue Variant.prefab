@@ -7,6 +7,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2242721028699434958, guid: aa1f88f45ba5b3c4fb7f4de613b6b108, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3053538376833568555, guid: aa1f88f45ba5b3c4fb7f4de613b6b108, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5791480126576725587, guid: aa1f88f45ba5b3c4fb7f4de613b6b108, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -67,9 +75,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5791480126578725153, guid: aa1f88f45ba5b3c4fb7f4de613b6b108, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5791480126578725155, guid: aa1f88f45ba5b3c4fb7f4de613b6b108, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5791480126578725157, guid: aa1f88f45ba5b3c4fb7f4de613b6b108, type: 3}
       propertyPath: m_Name
-      value: Tank_Blue
+      value: Tank_Blue Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 5791480126578725157, guid: aa1f88f45ba5b3c4fb7f4de613b6b108, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5791480126578725159, guid: aa1f88f45ba5b3c4fb7f4de613b6b108, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5791480126578725161, guid: aa1f88f45ba5b3c4fb7f4de613b6b108, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5791480126578725165, guid: aa1f88f45ba5b3c4fb7f4de613b6b108, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272741606729824640, guid: aa1f88f45ba5b3c4fb7f4de613b6b108, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa1f88f45ba5b3c4fb7f4de613b6b108, type: 3}

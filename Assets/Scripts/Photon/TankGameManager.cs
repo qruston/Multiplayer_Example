@@ -98,7 +98,8 @@ public class TankGameManager : MonoBehaviourPunCallbacks, IInRoomCallbacks, IOnE
             {
                 //Show Game Over Screen
                 gameoverUI.SetActive(true);
-                winnerText.text = "Player " + (WinnerIndex + 1) + " Wins!";
+                
+                winnerText.text = PhotonNetwork.PlayerList[WinnerIndex].NickName + " Wins!";
                 if (PhotonNetwork.IsMasterClient)
                 {
                     PhotonNetwork.CurrentRoom.IsOpen = false;//Set the room to closed so no new players join

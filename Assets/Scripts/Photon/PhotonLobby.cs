@@ -3,10 +3,13 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PhotonLobby : MonoBehaviourPunCallbacks
 {
     public static PhotonLobby lobby;
+
+    public TMP_InputField nameField;
 
     public GameObject battleButton;
     public GameObject cancelButton;
@@ -20,6 +23,16 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();//Connect to master photon server
+        if (PlayerInfo.PI.playerName != "")
+        {
+            nameField.SetTextWithoutNotify(PlayerInfo.PI.playerName);
+        }
+        else
+        {
+            int playerName = Random.Range(0, 10000);
+
+            nameField.SetTextWithoutNotify("Player " + playerName);
+        }
     }
 
     public override void OnConnectedToMaster()
@@ -34,6 +47,7 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
         //Debug.Log("Player Has clicked the battle button");
         battleButton.SetActive(false);
         cancelButton.SetActive(true);
+        PlayerInfo.PI.playerName = nameField.text;
         PhotonNetwork.JoinRandomRoom();//Joins a random room
     }
     

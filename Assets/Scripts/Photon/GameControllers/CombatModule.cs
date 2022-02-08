@@ -24,7 +24,6 @@ public class CombatModule : MonoBehaviour
     {
         PV = GetComponent<PhotonView>();
         avatarSetup = GetComponent<PlayerAvatar>();
-        healthDisplay = GameSetup.GS.healthDisplay;
     }
 
     // Update is called once per frame
@@ -45,7 +44,6 @@ public class CombatModule : MonoBehaviour
             }
         }
        
-        healthDisplay.text = avatarSetup.playerHealth.ToString();//Update Health Display
     }
 
     public void Shoot()

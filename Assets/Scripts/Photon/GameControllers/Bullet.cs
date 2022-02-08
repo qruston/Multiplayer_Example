@@ -50,7 +50,7 @@ public class Bullet : MonoBehaviour
 
     private IEnumerator WaitAndDestroy()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForEndOfFrame();
         PhotonNetwork.Destroy(gameObject);//Destroy this object on the network
     }
 

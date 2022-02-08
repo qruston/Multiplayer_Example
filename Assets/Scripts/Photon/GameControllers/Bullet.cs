@@ -6,10 +6,11 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     private PhotonView PV;
-    public float speed = 10;
-    public float timer = 0;
-    public float lifetime = 10;
-    public GameObject hitPrefab;
+
+    public float speed = 10;//Speed of the bullet 
+    public float timer = 0;//Lifetime timer
+    public float lifetime = 10;//Lifetime
+    public GameObject hitPrefab;//Hit particle prefab
 
     private void Awake()
     {

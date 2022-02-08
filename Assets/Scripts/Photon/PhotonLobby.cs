@@ -7,12 +7,12 @@ using TMPro;
 
 public class PhotonLobby : MonoBehaviourPunCallbacks
 {
-    public static PhotonLobby lobby;
+    public static PhotonLobby lobby;//Singleton
 
-    public TMP_InputField nameField;
+    public TMP_InputField nameField;//Input field for the player name
 
-    public GameObject battleButton;
-    public GameObject cancelButton;
+    public GameObject battleButton;//Button tobegin searching for a game
+    public GameObject cancelButton;//Button to cancel searching
 
     private void Awake()
     {
@@ -23,31 +23,29 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();//Connect to master photon server
-        if (PlayerInfo.PI.playerName != "")
+        if (PlayerInfo.PI.playerName != "")//Check if the player name has already been set 
         {
-            nameField.SetTextWithoutNotify(PlayerInfo.PI.playerName);
+            nameField.SetTextWithoutNotify(PlayerInfo.PI.playerName);//Update input field with current player name
         }
         else
         {
-            int playerName = Random.Range(0, 10000);
+            int playerName = Random.Range(0, 10000);//Pick random number 
 
-            nameField.SetTextWithoutNotify("Player " + playerName);
+            nameField.SetTextWithoutNotify("Player " + playerName);//Set a random player name 
         }
     }
 
     public override void OnConnectedToMaster()
     {
-        //Debug.Log("Player Has Connected to photon servers");
         PhotonNetwork.AutomaticallySyncScene = true;//When master loads level all clients load as well
-        battleButton.SetActive(true);
+        battleButton.SetActive(true);//Show battle button
     }
 
     public void OnBattleButtonClicked()
     {
-        //Debug.Log("Player Has clicked the battle button");
-        battleButton.SetActive(false);
-        cancelButton.SetActive(true);
-        PlayerInfo.PI.playerName = nameField.text;
+        battleButton.SetActive(false);//Hide battle button 
+        cancelButton.SetActive(true);//Show Cancel button
+        PlayerInfo.PI.playerName = nameField.text;// set the player name using the name input field 
         PhotonNetwork.JoinRandomRoom();//Joins a random room
     }
     
@@ -58,32 +56,26 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
     /// <param name="message"></param>
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        //Debug.Log("tried to join room but failed, there must be no rooms");
-        CreateRoom();
+        CreateRoom();//Join failed create new room
     }
 
     void CreateRoom()
     {
-        //Debug.Log("Player Is Creating A Room");
         int randomRoomName = Random.Range(0, 10000);//Get a random number to add to the room name
         RoomOptions roomOps = new RoomOptions() { IsVisible = true, IsOpen = true, MaxPlayers = 4 };//Set default room options
         PhotonNetwork.CreateRoom("Room" + randomRoomName.ToString(), roomOps);//Create new room
     }
 
-   
-
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         //failed to create room probably duplicate room name 
-        //Debug.Log("Failed to create Room, there is probably a duplicate room name");
         CreateRoom();//Retry creating room
     }
 
     public void OnCancelButtonClicked()
     {
-        //Debug.Log("Player Has canceld searching");
-        cancelButton.SetActive(false);
-        battleButton.SetActive(true);
-        PhotonNetwork.LeaveRoom();
+        cancelButton.SetActive(false);//Hide cancel button
+        battleButton.SetActive(true);//Show battle Button
+        PhotonNetwork.LeaveRoom();//Leave room 
     }
 }

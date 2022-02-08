@@ -9,8 +9,9 @@ public class CombatModule : MonoBehaviour
 {
 
     private PhotonView PV;
-    private PlayerAvatar avatarSetup;
-    public Transform rayOrigin;
+    private PlayerAvatar playerAvatar;
+
+    public Transform fireLoc;
     public GameObject bulletPrefab;
     public GameObject muzzleFlashPrefab;
 
@@ -23,38 +24,41 @@ public class CombatModule : MonoBehaviour
     void Start()
     {
         PV = GetComponent<PhotonView>();
-        avatarSetup = GetComponent<PlayerAvatar>();
+        playerAvatar = GetComponent<PlayerAvatar>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!PV.IsMine)
+        if (!PV.IsMine)//Is this the local player
         {
             return;
         }
 
         fireTimer += Time.deltaTime;//Update Timer
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0))//Check for fire input
         {
-            if (fireTimer >= fireRate)
+            if (fireTimer >= fireRate)//Check for fire rate 
             {
                 fireTimer = 0;
-                Shoot();
+                Shoot();//Fire
             }
         }
        
     }
 
+    /// <summary>
+    /// Shoots a bullet from the fire location
+    /// </summary>
     public void Shoot()
     {
-        if (rayOrigin == null)//If Ray Origin hasn't been setup
+        if (fireLoc == null)//If fire location hasn't been setup
         {
-            if (avatarSetup.myCharacter)
-                rayOrigin = avatarSetup.myCharacter.GetComponent<TankRotator>().fireLocation;//Get the origin from the tank helper class
+            if (playerAvatar.avatarVisual)
+                fireLoc = playerAvatar.avatarVisual.GetComponent<TankRotator>().fireLocation;//Get the origin from the tank helper class
         }
-        PV.RPC("RPC_MuzzleFlash", RpcTarget.All,rayOrigin.position,rayOrigin.rotation);//Spawn Muzzle flash over the network
-        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Bullet"), rayOrigin.position, rayOrigin.rotation);//Spawn Bullet on network
+        PV.RPC("RPC_MuzzleFlash", RpcTarget.All,fireLoc.position,fireLoc.rotation);//Spawn Muzzle flash over the network
+        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Bullet"), fireLoc.position, fireLoc.rotation);//Spawn Bullet on network
     }
     [PunRPC]
     void RPC_MuzzleFlash(Vector3 pos,Quaternion rot)

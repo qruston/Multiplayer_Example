@@ -8,9 +8,9 @@ public class GameSetup : MonoBehaviour
 
     public static GameSetup GS;
 
-    public TMP_Text healthDisplay;
+    public TMP_Text healthDisplay;//Health display for the local player
 
-    public Transform[] spawnPoints;
+    public Transform[] spawnPoints;//Spawn Points for the players
 
     private void OnEnable()
     {

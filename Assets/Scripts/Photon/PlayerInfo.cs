@@ -6,10 +6,10 @@ public class PlayerInfo : MonoBehaviour
 {
     public static PlayerInfo PI;
 
-    public int mySelectedColour;
-    public string playerName;
+    public int mySelectedColour;//old player selection variable 
+    public string playerName;//Current player name for the local player
 
-    public GameObject[] PlayerTanks;
+    public GameObject[] PlayerTanks;//List of player tank prefabs
 
 
     private void OnEnable()
@@ -34,15 +34,15 @@ public class PlayerInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (PlayerPrefs.HasKey("MyCharacter"))
-        {
-            mySelectedColour = PlayerPrefs.GetInt("MyCharacter");
-        }
-        else
-        {
-            mySelectedColour = 0;
-            PlayerPrefs.SetInt("MyCharacter", mySelectedColour);
-        }
+        //if (PlayerPrefs.HasKey("MyCharacter"))
+        //{
+        //    mySelectedColour = PlayerPrefs.GetInt("MyCharacter");
+        //}
+        //else
+        //{
+        //    mySelectedColour = 0;
+        //    PlayerPrefs.SetInt("MyCharacter", mySelectedColour);
+        //}
     }
 
 }

@@ -13,16 +13,14 @@ public class PlayerAvatar : MonoBehaviour, IInRoomCallbacks
 {
     private PhotonView PV;
 
-    public int CharacterValue;
-    public GameObject myCharacter;
-    public int playerHealth;
-    public int playerDamage;
-    public bool isDead = false;
+    public int playerIndex;//Index of the player on the network
+    public GameObject avatarVisual;//Visual Avatar of the player
+    public int playerHealth;//Health of the player
 
-    public Image healthBar;
-    public TMP_Text playerName;
+    public Image healthBar;//Health bar for the player
+    public TMP_Text playerName;//Name of the player on the ui
 
-    public Camera myCamera;
+    public Camera myCamera;//Camera for the player
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +32,7 @@ public class PlayerAvatar : MonoBehaviour, IInRoomCallbacks
         {
             if (PhotonNetwork.PlayerList[i] != null && PhotonNetwork.PlayerList[i] == PV.Owner)
             {
-                CharacterValue = i;//Set the Player Number to the character value for adding the tank model later
+                playerIndex = i;//Set the Player Number to the character value for adding the tank model later
             }
         }
 
@@ -43,12 +41,12 @@ public class PlayerAvatar : MonoBehaviour, IInRoomCallbacks
         {
            
 
-            object[] data = new object[] { CharacterValue };
+            object[] data = new object[] { playerIndex };
             RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
             //Raise event to add player to the tank game manager 
             PhotonNetwork.RaiseEvent(TankGameManager.PLAYER_ADD_EVENT, data, raiseEventOptions, SendOptions.SendReliable);
 
-            PV.RPC("RPC_AddCharacter", RpcTarget.AllBuffered, CharacterValue);//Spawn Player tank based on found index
+            PV.RPC("RPC_AddCharacter", RpcTarget.AllBuffered, playerIndex);//Spawn Player tank based on found index
 
             //Initialize Custom Properties
             Hashtable hash = new Hashtable();
@@ -92,7 +90,7 @@ public class PlayerAvatar : MonoBehaviour, IInRoomCallbacks
     void RPC_AddCharacter(int characterIndex)
     {
         //Spawn the Tank model based on the player Index
-        myCharacter = Instantiate(PlayerInfo.PI.PlayerTanks[characterIndex],
+        avatarVisual = Instantiate(PlayerInfo.PI.PlayerTanks[characterIndex],
             transform.position,transform.rotation,transform);
     }
 
@@ -102,8 +100,8 @@ public class PlayerAvatar : MonoBehaviour, IInRoomCallbacks
     /// <param name="Rotation"></param>
     public void RotateTankBase(float Rotation)
     {
-        if(myCharacter)
-            myCharacter.GetComponent<TankRotator>().tankBody.localEulerAngles = new Vector3(0,Rotation, 0);
+        if(avatarVisual)
+            avatarVisual.GetComponent<TankRotator>().tankBody.localEulerAngles = new Vector3(0,Rotation, 0);
     }
 
     /// <summary>
@@ -112,8 +110,8 @@ public class PlayerAvatar : MonoBehaviour, IInRoomCallbacks
     /// <param name="Rotation"></param>
     public void RotateTurret(float Rotation)
     {
-        if (myCharacter)
-            myCharacter.GetComponent<TankRotator>().tankTurret.localEulerAngles = new Vector3(0, Rotation, 0);
+        if (avatarVisual)
+            avatarVisual.GetComponent<TankRotator>().tankTurret.localEulerAngles = new Vector3(0, Rotation, 0);
     }
 
     /// <summary>
@@ -131,7 +129,7 @@ public class PlayerAvatar : MonoBehaviour, IInRoomCallbacks
 
             if (playerHealth <= 0)//This player is dead 
             {
-                object[] data = new object[] { CharacterValue };
+                object[] data = new object[] { playerIndex };
                 RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
                 PhotonNetwork.RaiseEvent(TankGameManager.PLAYER_DEAD_EVENT, data, raiseEventOptions, SendOptions.SendReliable);
 
@@ -143,18 +141,7 @@ public class PlayerAvatar : MonoBehaviour, IInRoomCallbacks
         }
     }
 
-    public void OnPlayerEnteredRoom(Player newPlayer)
-    {
-    }
-
-    public void OnPlayerLeftRoom(Player otherPlayer)
-    {
-    }
-
-    public void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
-    {
-    }
-
+    #region Unused Interface Implimentations 
     public void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         if (targetPlayer == PV.Owner)
@@ -177,7 +164,20 @@ public class PlayerAvatar : MonoBehaviour, IInRoomCallbacks
         }
     }
 
+    public void OnPlayerEnteredRoom(Player newPlayer)
+    {
+    }
+
+    public void OnPlayerLeftRoom(Player otherPlayer)
+    {
+    }
+
+    public void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    {
+    }
+
     public void OnMasterClientSwitched(Player newMasterClient)
     {
     }
+    #endregion
 }

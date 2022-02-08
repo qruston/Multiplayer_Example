@@ -771,6 +771,7 @@ MonoBehaviour:
   myCharacter: {fileID: 0}
   playerHealth: 100
   playerDamage: 25
+  isDead: 0
   healthBar: {fileID: 7710525134987779459}
   playerName: {fileID: 1461966410}
   myCamera: {fileID: 963194227}

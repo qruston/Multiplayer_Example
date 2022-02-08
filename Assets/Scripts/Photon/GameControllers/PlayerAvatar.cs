@@ -17,6 +17,7 @@ public class PlayerAvatar : MonoBehaviour, IInRoomCallbacks
     public GameObject myCharacter;
     public int playerHealth;
     public int playerDamage;
+    public bool isDead = false;
 
     public Image healthBar;
     public TMP_Text playerName;
@@ -52,6 +53,7 @@ public class PlayerAvatar : MonoBehaviour, IInRoomCallbacks
             //Initialize Custom Properties
             Hashtable hash = new Hashtable();
             hash.Add("Health", playerHealth);
+            hash.Add("isDead", false);
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);//Set the initial health custom properties
         }
         else
@@ -120,17 +122,24 @@ public class PlayerAvatar : MonoBehaviour, IInRoomCallbacks
     /// <param name="dmg"></param>
     public void DealDamage(int dmg)
     {
-        playerHealth -= dmg;//Damage player health
-        Hashtable hash = new Hashtable();//Create a new hash table
-        hash.Add("Health", playerHealth);//Add player health to has table
-        PV.Owner.SetCustomProperties(hash);//Set the Health custom properties
-
-        if (playerHealth <= 0)//This player is dead 
+        if (!(bool)PV.Owner.CustomProperties["isDead"])
         {
-            object[] data = new object[] { CharacterValue };
-            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-            PhotonNetwork.RaiseEvent(TankGameManager.PLAYER_DEAD_EVENT, data, raiseEventOptions, SendOptions.SendReliable);
-            
+            playerHealth -= dmg;//Damage player health
+            Hashtable hash = new Hashtable();//Create a new hash table
+            hash.Add("Health", playerHealth);//Add player health to has table
+            PV.Owner.SetCustomProperties(hash);//Set the Health custom properties
+
+            if (playerHealth <= 0)//This player is dead 
+            {
+                object[] data = new object[] { CharacterValue };
+                RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                PhotonNetwork.RaiseEvent(TankGameManager.PLAYER_DEAD_EVENT, data, raiseEventOptions, SendOptions.SendReliable);
+
+                hash = new Hashtable();//Create a new hash table
+                hash.Add("isDead", true);//Add isDead
+                PV.Owner.SetCustomProperties(hash);//Set the isDead Custom Property
+
+            }
         }
     }
 

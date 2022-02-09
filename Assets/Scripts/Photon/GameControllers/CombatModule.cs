@@ -20,6 +20,8 @@ public class CombatModule : MonoBehaviour
     public float fireTimer = 0.5f;
     public float fireRate = 0.5f;
 
+    public bool ShootingTest = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,7 +38,7 @@ public class CombatModule : MonoBehaviour
         }
 
         fireTimer += Time.deltaTime;//Update Timer
-        if (Input.GetMouseButton(0))//Check for fire input
+        if (Input.GetMouseButton(0) || ShootingTest)//Check for fire input
         {
             if (fireTimer >= fireRate)//Check for fire rate 
             {

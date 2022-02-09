@@ -15,7 +15,7 @@ public class PlayerAvatar : MonoBehaviour, IInRoomCallbacks
 
     public int playerIndex;//Index of the player on the network
     public GameObject avatarVisual;//Visual Avatar of the player
-    public int playerHealth;//Health of the player
+    public int initialHealth;//Health of the player
 
     public Image healthBar;//Health bar for the player
     public TMP_Text playerName;//Name of the player on the ui
@@ -50,7 +50,7 @@ public class PlayerAvatar : MonoBehaviour, IInRoomCallbacks
 
             //Initialize Custom Properties
             Hashtable hash = new Hashtable();
-            hash.Add("Health", playerHealth);
+            hash.Add("Health", initialHealth);
             hash.Add("isDead", false);
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);//Set the initial health custom properties
         }
@@ -122,12 +122,13 @@ public class PlayerAvatar : MonoBehaviour, IInRoomCallbacks
     {
         if (!(bool)PV.Owner.CustomProperties["isDead"])
         {
-            playerHealth -= dmg;//Damage player health
+            //playerHealth -= dmg;//Damage player health
+            int health = (int)PV.Owner.CustomProperties["Health"] - dmg;
             Hashtable hash = new Hashtable();//Create a new hash table
-            hash.Add("Health", playerHealth);//Add player health to has table
+            hash.Add("Health", health);//Add player health to has table
             PV.Owner.SetCustomProperties(hash);//Set the Health custom properties
 
-            if (playerHealth <= 0)//This player is dead 
+            if (health <= 0)//This player is dead 
             {
                 object[] data = new object[] { playerIndex };
                 RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
@@ -141,7 +142,6 @@ public class PlayerAvatar : MonoBehaviour, IInRoomCallbacks
         }
     }
 
-    #region Unused Interface Implimentations 
     public void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         if (targetPlayer == PV.Owner)
@@ -155,14 +155,16 @@ public class PlayerAvatar : MonoBehaviour, IInRoomCallbacks
 
                     if ((int)targetPlayer.CustomProperties["Health"] <= 0)//Check if the player is dead
                     {
-                        //PhotonNetwork.Destroy(gameObject);//destroy players avatar
-                        GetComponent<PlayerMovement>().enabled = false;
-                        GetComponent<CombatModule>().enabled = false;
+                        GetComponent<PlayerMovement>().enabled = false;//Disable movement 
+                        GetComponent<CombatModule>().enabled = false;//Disable Combat
                     }
                 }
             }
         }
     }
+
+
+    #region Unused Interface Implimentations 
 
     public void OnPlayerEnteredRoom(Player newPlayer)
     {
